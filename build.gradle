@@ -1,0 +1,113 @@
+plugins {
+    id 'java'
+    id 'idea'
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.spring.dependency.management)
+    alias(libs.plugins.spring.boot) apply false
+
+}
+
+group = 'com.github.pdd-utils'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+
+allprojects {
+    repositories {
+        mavenLocal()
+        maven { url "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/" }
+        maven {
+            url "https://packages.aliyun.com/maven/repository/2434200-release-D0TxCI/"
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+        }
+        maven {
+            url "https://packages.aliyun.com/maven/repository/2434200-snapshot-0TMt2Y/"
+            credentials {
+                username "$mavenUser"
+                password "$mavenPassword"
+            }
+        }
+    }
+}
+
+
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+apply plugin: 'io.spring.dependency-management'
+
+subprojects {
+    apply plugin: 'io.freefair.lombok'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
+
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+
+    publishing {
+        publications {
+            //noinspection GroovyAssignabilityCheck
+            maven(MavenPublication) {
+                //noinspection GroovyAssignabilityCheck
+                artifactId = project.name
+                //noinspection GroovyAssignabilityCheck
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                def releasesRepoUrl = 'https://packages.aliyun.com/maven/repository/2434200-release-D0TxCI/'
+                def snapshotsRepoUrl = 'https://packages.aliyun.com/maven/repository/2434200-snapshot-0TMt2Y/'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username "$mavenUser"
+                    password "$mavenPassword"
+                }
+            }
+        }
+    }
+
+
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+
+    idea {
+        module {
+            excludeDirs += [file("logs"), file("build-cache")]
+        }
+    }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << "-parameters"
+        options.compilerArgs += [
+                '-Xlint:unchecked'
+        ]
+    }
+}
+
+
+
+

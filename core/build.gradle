@@ -1,0 +1,8 @@
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation libs.hutool.all
+    implementation 'org.slf4j:slf4j-api'
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+}

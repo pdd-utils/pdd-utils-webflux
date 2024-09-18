@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        maven { url "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/" }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+
+
+rootProject.name = '拼多多接口工具'
+
+include 'core'
+include 'webflux'
+
+buildCache {
+    local {
+        directory = new File(rootDir, 'build-cache')
+    }
+}
+
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        libs {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+
