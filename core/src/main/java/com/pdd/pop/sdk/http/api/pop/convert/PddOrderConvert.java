@@ -4,6 +4,7 @@ import com.pdd.pop.sdk.http.api.pop.response.PddOrderInformationGetResponse;
 import com.pdd.pop.sdk.http.api.pop.response.PddOrderListGetResponse;
 import com.pdd.pop.sdk.http.api.pop.response.PddOrderNumberListIncrementGetResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -18,6 +19,9 @@ public interface PddOrderConvert {
     PddOrderListGetResponse.OrderListGetResponseOrderListItem convert(
             PddOrderNumberListIncrementGetResponse.OrderSnIncrementGetResponseOrderSnListItem info);
 
+    @Mapping(target = "orderList", source = "orderSnList")
+    PddOrderListGetResponse.OrderListGetResponse convert(
+            PddOrderNumberListIncrementGetResponse.OrderSnIncrementGetResponse value);
 
     PddOrderListGetResponse.OrderListGetResponseOrderListItemCardInfoListItem map(
             PddOrderInformationGetResponse.OrderInfoGetResponseOrderInfoCardInfoListItem value);

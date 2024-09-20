@@ -97,4 +97,8 @@ public abstract class PopBaseHttpRequest<T> {
             return param instanceof String;
         }
     }
+
+    public HttpMethod getHttpMethod() {
+        return HttpMethod.POST;
+    }
 }

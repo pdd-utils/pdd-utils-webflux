@@ -20,6 +20,9 @@ public class PopHttpClient {
     protected final String clientSecret;
     protected String apiServerUrl;
 
+    public <T extends PopBaseHttpResponse> Mono<T> syncInvoke(PopBaseHttpRequest<T> request) {
+        return syncInvoke(request, null, null);
+    }
     public <T extends PopBaseHttpResponse> Mono<T> syncInvoke(PopBaseHttpRequest<T> request,
                                                               String accessToken) {
         return syncInvoke(request, accessToken, null);
