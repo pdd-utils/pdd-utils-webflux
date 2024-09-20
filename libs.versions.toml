@@ -1,6 +1,6 @@
 [versions]
-hutool = "5.8.29"
-mapstruct = "1.5.5.Final"
+hutool = "5.8.+"
+mapstruct = "1.6.+"
 
 [libraries]
 
